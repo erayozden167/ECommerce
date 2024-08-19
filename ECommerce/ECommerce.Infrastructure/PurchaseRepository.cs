@@ -17,7 +17,7 @@ namespace ECommerce.Infrastructure
             _purchaseContext = purchaseContext;
         }
 
-        public async Task<bool> PurchaseAsync(Purchase purchase)
+        public async Task<bool> PurchaseAddAsync(Purchase purchase)
         {
             Product? product = await _purchaseContext.Products.FindAsync(purchase.ProductId);
             User? user = await _purchaseContext.Users.FindAsync(purchase.UserId);
@@ -46,6 +46,17 @@ namespace ECommerce.Infrastructure
             await _purchaseContext.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<Purchase> GetPurchaseAsync(int id)
+        {
+            Purchase? purchase = await _purchaseContext.Purchases.Include(x => x.Product)
+                .FirstOrDefaultAsync(x => x.UserId == id);
+            if (purchase == null)
+            {
+                return new Purchase();
+            }
+            return purchase;
         }
     }
 }

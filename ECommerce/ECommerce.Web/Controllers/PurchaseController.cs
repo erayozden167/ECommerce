@@ -15,6 +15,7 @@ namespace ECommerce.Web.Controllers
         {
             return View();
         }
+        [HttpPost]
         public async Task<IActionResult> Purchase(PurchaseDTO request)
         {
             if (!ModelState.IsValid)
@@ -24,12 +25,23 @@ namespace ECommerce.Web.Controllers
             int userId = 1; // for now
             request.UserId = userId;
 
-            bool response = await _purchaseService.PurchaseAsync(request);
+            bool response = await _purchaseService.PurchaseAddAsync(request);
 
             if (!response)
             {
                 return View(BadRequest());
             }
+
+
+            return View(Ok());
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetPurchaseByUser(int id)
+        {
+            PurchaseDTO purchase = await _purchaseService.GetPurchaseAsync(id);
+
+
+
 
 
             return View(Ok());

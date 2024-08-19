@@ -8,8 +8,11 @@ namespace ECommerce.DTOs
 {
     public class PurchaseDTO
     {
+        public int PurchaseId { get; set; }
         public int UserId { get; set; }
         public int ProductId { get; set; }
+        public int SellerId { get; set; }
         public int Quantity { get; set; }
+
     }
 }

@@ -16,7 +16,7 @@ namespace ECommerce.Business
         {
             _purchaseRepository = purchaseRepository;
         }
-        public async Task<bool> PurchaseAsync(PurchaseDTO request)
+        public async Task<bool> PurchaseAddAsync(PurchaseDTO request)
         {
             Purchase purchase = new Purchase
             {
@@ -25,13 +25,30 @@ namespace ECommerce.Business
                 Quantity = request.Quantity,
                 PurchaseDate = DateTime.Now
             };
-            bool response = await _purchaseRepository.PurchaseAsync(purchase);
+            bool response = await _purchaseRepository.PurchaseAddAsync(purchase);
             if (!response)
             {
                 return false;
             }
 
             return true;
+        }
+
+        public async Task<PurchaseDTO> GetPurchaseAsync(int id)
+        {
+
+            Purchase response = await _purchaseRepository.GetPurchaseAsync(id);
+
+            if (response == null)
+            {
+                return new PurchaseDTO();
+            }
+            return new PurchaseDTO()
+            {
+                PurchaseId = response.PurchaseId,
+                Quantity = response.Quantity,
+                Product = response.Product
+            };
         }
     }
 }
