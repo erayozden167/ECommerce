@@ -35,7 +35,7 @@ namespace ECommerce.Infrastructure
             await _purchaseContext.Sales.AddAsync(new Sale
             {
                 QuantitySold = purchase.Quantity,
-                SaleDate = DateTime.Now,
+                SaleDate = DateTime.UtcNow,
                 ProductId = purchase.ProductId,
                 SellerId = product.SellerId
             });
