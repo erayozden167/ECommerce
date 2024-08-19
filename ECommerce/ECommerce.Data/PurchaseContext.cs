@@ -14,7 +14,6 @@ namespace ECommerce.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Seller> Sellers { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public PurchaseContext(DbContextOptions<PurchaseContext> options) : base(options)
         {
@@ -32,16 +31,6 @@ namespace ECommerce.Data
                 .HasOne(p => p.User)
                 .WithMany(u => u.Purchases)
                 .HasForeignKey(p => p.UserId);
-
-            modelBuilder.Entity<Sale>()
-                .HasOne(s => s.Product)
-                .WithMany(p => p.Sales)
-                .HasForeignKey(s => s.ProductId);
-
-            modelBuilder.Entity<Sale>()
-                .HasOne(s => s.Seller)
-                .WithMany(s => s.Sales)
-                .HasForeignKey(s => s.SellerId);
 
         }
     }
