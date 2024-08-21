@@ -22,9 +22,9 @@ namespace ECommerce.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Purchase>()
-                .HasOne(p => p.Product)
-                .WithMany(pr => pr.Purchases)
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Purchases)
+                .WithOne(pr => pr.Product) 
                 .HasForeignKey(p => p.ProductId);
 
             modelBuilder.Entity<Purchase>()

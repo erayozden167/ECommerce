@@ -46,5 +46,20 @@ namespace ECommerce.Infrastructure
             return await _userSellerContext.Users
                 .Include(u => u.Seller).FirstOrDefaultAsync(u => u.UserId == id);
         }
+        public async Task<Seller?> AddSellerAsync(Seller seller)
+        {
+            User? user = await _userSellerContext.Users.FirstOrDefaultAsync(s => s.UserId == seller.UserId);
+            if (user == null || user.Role != "User")
+            {
+                return null;
+            }
+            seller.UserId = user.UserId;
+            seller.User = user;
+            user.Seller = seller;
+            _userSellerContext.Users.Update(user);
+            await _userSellerContext.SaveChangesAsync();
+
+            return seller;
+        }
     }
 }

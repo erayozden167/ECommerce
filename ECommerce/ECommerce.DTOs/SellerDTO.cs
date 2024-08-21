@@ -13,5 +13,6 @@ namespace ECommerce.DTOs
         public string ApprovalStatus { get; set; }
         public DateTime CreatedDate { get; set; }
         public int SalesCount { get; set; }
+        public int UserId { get; set; }
     }
 }

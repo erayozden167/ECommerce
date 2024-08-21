@@ -18,9 +18,9 @@ namespace ECommerce.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Seller>()
-                .HasOne(s => s.User)
-                .WithOne(u => u.Seller)
+            modelBuilder.Entity<User>()
+                .HasOne(s => s.Seller)
+                .WithOne(u => u.User)
                 .HasForeignKey<Seller>(s => s.UserId);
         }
     }

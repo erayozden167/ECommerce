@@ -27,12 +27,26 @@ namespace Presentation.Controllers
         [HttpGet("seller")]
         public async Task<IActionResult> GetSeller(int id)
         {
-            USellerDTO? uSeller = await _userService.GetSellerAsync(id);
+            UserSellerDTO? uSeller = await _userService.GetSellerAsync(id);
             if (uSeller == null)
             {
                 return BadRequest();
             }
             return Ok(uSeller);
+        }
+        [HttpPost("Create/Shop")]
+        public async Task<IActionResult> AddSellerAsync(AddSellerDTO seller)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            SellerDTO? response = await _userService.AddSellerAsync(seller);
+            if (response == null)
+            {
+                return BadRequest();
+            }
+            return Ok(response);
         }
     }
 }

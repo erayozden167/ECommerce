@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.DTOs
 {
-    public class USellerDTO
+    public class UserSellerDTO
     {
         public UserDTO User { get; set; }
         public SellerDTO Seller { get; set; }

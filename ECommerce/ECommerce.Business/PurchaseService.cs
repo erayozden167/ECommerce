@@ -47,7 +47,7 @@ namespace ECommerce.Business
             {
                 PurchaseId = response.PurchaseId,
                 Quantity = response.Quantity,
-                Product = response.Product
+                ProductId = response.ProductId
             };
         }
     }
