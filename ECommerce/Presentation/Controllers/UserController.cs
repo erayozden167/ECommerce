@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business;
+using ECommerce.Business.Interfaces;
 using ECommerce.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace Presentation.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -21,18 +22,18 @@ namespace Presentation.Controllers
             {
                 return BadRequest();
             }
-            UserDTO? user = await _userService.GetUserAsync(id);
+            UserDTO? user = await _userService.GetAsync(id);
             return Ok(user);
         }
         [HttpGet("seller")]
         public async Task<IActionResult> GetSeller(int id)
         {
-            UserSellerDTO? uSeller = await _userService.GetSellerAsync(id);
-            if (uSeller == null)
+            SellerDTO? seller = await _userService.GetSellerAsync(id);
+            if (seller == null)
             {
                 return BadRequest();
             }
-            return Ok(uSeller);
+            return Ok(seller);
         }
         [HttpPost("Create/Shop")]
         public async Task<IActionResult> AddSellerAsync(AddSellerDTO seller)

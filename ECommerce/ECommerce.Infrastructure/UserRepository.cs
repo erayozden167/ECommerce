@@ -16,18 +16,18 @@ namespace ECommerce.Infrastructure
         {
             _userSellerContext = userSellerContext;
         }
-        public async Task<User?> GetUserByIdAsync(int id)
+        public async Task<User?> GetByIdAsync(int id)
         {
             return await _userSellerContext.Users
                 .FirstOrDefaultAsync(u => u.UserId == id);
         }
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
             return await _userSellerContext.Users
                 .Include(u => u.Seller)
                 .FirstOrDefaultAsync(u=> u.Email == email);
         }
-        public async Task<bool> AddUserAsync(User user)
+        public async Task<bool> AddAsync(User user)
         {
             try
             {
@@ -41,10 +41,11 @@ namespace ECommerce.Infrastructure
             }
             
         }
-        public async Task<User?> GetSellerAsync(int id)
+        public async Task<Seller?> GetSellerAsync(int id)
         {
-            return await _userSellerContext.Users
+            User? user = await _userSellerContext.Users
                 .Include(u => u.Seller).FirstOrDefaultAsync(u => u.UserId == id);
+            return user?.Seller;
         }
         public async Task<Seller?> AddSellerAsync(Seller seller)
         {

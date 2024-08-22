@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain;
+﻿using ECommerce.Business.Interfaces;
+using ECommerce.Domain;
 using ECommerce.DTOs;
 using ECommerce.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Business
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly UserRepository _userRepository;
         private readonly string _secretKey; 
@@ -22,7 +23,7 @@ namespace ECommerce.Business
             _userRepository = userRepository;
             _secretKey = secretKey;
         }
-        public async Task<bool> RegisterAsync(UserRegisterDTO register)
+        public async Task<bool> RegisterAsync(RegisterDto register)
         {
             string password = BCrypt.Net.BCrypt.HashPassword(register.Password);
             User user = new User()
@@ -32,7 +33,7 @@ namespace ECommerce.Business
                 Email = register.Email,
                 PasswordHash = password
             };
-            bool result = await _userRepository.AddUserAsync(user);
+            bool result = await _userRepository.AddAsync(user);
             if (!result)
             {
                 return false;
@@ -41,7 +42,7 @@ namespace ECommerce.Business
         }
         public async Task<AuthResultDTO> LoginAsync(LoginDTO login)
         {
-            User? user = await _userRepository.GetUserByEmailAsync(login.Email);
+            User? user = await _userRepository.GetByEmailAsync(login.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password,user.PasswordHash))
             {
                 return new AuthResultDTO() { IsSuccess = false};

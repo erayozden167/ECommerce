@@ -1,4 +1,5 @@
 using ECommerce.Business;
+using ECommerce.Business.Interfaces;
 using ECommerce.Data;
 using ECommerce.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,9 @@ builder.Services.AddDbContext<PurchaseContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Services
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<PurchaseService>();
 
 //Repositories

@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain;
+﻿using ECommerce.Business.Interfaces;
+using ECommerce.Domain;
 using ECommerce.DTOs;
 using ECommerce.Infrastructure;
 using System;
@@ -9,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Business
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly UserRepository _userRepository;
         public UserService(UserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-        public async Task<UserDTO?> GetUserAsync(int id)
+        public async Task<UserDTO?> GetAsync(int id)
         {
-            User? user = await _userRepository.GetUserByIdAsync(id);
+            User? user = await _userRepository.GetByIdAsync(id);
             if (user == null)
             {
                 return null;
@@ -33,34 +34,23 @@ namespace ECommerce.Business
             };
             return userDTO;
         }
-        public async Task<UserSellerDTO?> GetSellerAsync(int id)
+        public async Task<SellerDTO?> GetSellerAsync(int id)
         {
-            User? user = await _userRepository.GetSellerAsync(id);
-            if (user == null)
+            Seller? seller = await _userRepository.GetSellerAsync(id);
+            if (seller == null)
             {
                 return null;
             }
-            UserDTO userDTO = new UserDTO()
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                Role = user.Role
-            };
+            
             SellerDTO sellerDTO = new SellerDTO()
             {
-                SellerId = user.Seller.SellerId,
-                StoreName = user.Seller.StoreName,
-                CreatedDate = user.Seller.CreatedDate,
-                SalesCount = user.Seller.Sales.Count
+                SellerId = seller.SellerId,
+                StoreName = seller.StoreName,
+                CreatedDate = seller.CreatedDate,
+                SalesCount = seller.Sales.Count
             };
-            UserSellerDTO uSellerDTO = new UserSellerDTO()
-            {
-                User = userDTO,
-                Seller = sellerDTO
-            };
-            return uSellerDTO;
+           
+            return sellerDTO;
         }
         public async Task<SellerDTO?> AddSellerAsync(AddSellerDTO request)
         {

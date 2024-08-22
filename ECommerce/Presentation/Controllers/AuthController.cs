@@ -1,4 +1,5 @@
 ﻿using ECommerce.Business;
+using ECommerce.Business.Interfaces;
 using ECommerce.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,13 @@ namespace Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _authService;
-        public AuthController(AuthService authService)
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync(UserRegisterDTO register)
+        public async Task<IActionResult> RegisterAsync(RegisterDto register)
         {
             if (!ModelState.IsValid)
             {

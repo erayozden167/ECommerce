@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.DTOs
 {
-    public class UserRegisterDTO
+    public class RegisterDto
     {
         [Required]
         [StringLength(50,MinimumLength = 3)]
