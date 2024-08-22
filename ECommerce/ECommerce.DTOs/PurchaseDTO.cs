@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.DTOs
 {
-    public class PurchaseDTO
+    public class PurchaseDto
     {
         public int PurchaseId { get; set; }
         public int UserId { get; set; }

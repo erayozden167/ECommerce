@@ -22,32 +22,32 @@ namespace Presentation.Controllers
             {
                 return BadRequest();
             }
-            UserDTO? user = await _userService.GetAsync(id);
+            UserDto? user = await _userService.GetAsync(id);
             return Ok(user);
         }
-        [HttpGet("seller")]
-        public async Task<IActionResult> GetSeller(int id)
-        {
-            SellerDTO? seller = await _userService.GetSellerAsync(id);
-            if (seller == null)
-            {
-                return BadRequest();
-            }
-            return Ok(seller);
-        }
-        [HttpPost("Create/Shop")]
-        public async Task<IActionResult> AddSellerAsync(AddSellerDTO seller)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            SellerDTO? response = await _userService.AddSellerAsync(seller);
-            if (response == null)
-            {
-                return BadRequest();
-            }
-            return Ok(response);
-        }
+        //[HttpGet("seller")]
+        //public async Task<IActionResult> GetSeller(int id)
+        //{
+        //    SellerDto? seller = await _userService.GetSellerAsync(id);
+        //    if (seller == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    return Ok(seller);
+        //}
+        //[HttpPost("Create/Shop")]
+        //public async Task<IActionResult> AddSellerAsync(AddSellerDto seller)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    SellerDto? response = await _userService.AddSellerAsync(seller);
+        //    if (response == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    return Ok(response);
+        //}
     }
 }

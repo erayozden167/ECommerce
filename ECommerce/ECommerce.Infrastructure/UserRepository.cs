@@ -1,5 +1,6 @@
 ﻿using ECommerce.Data;
 using ECommerce.Domain;
+using ECommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,19 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Infrastructure
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly UserSellerContext _userSellerContext;
         public UserRepository(UserSellerContext userSellerContext)
         {
             _userSellerContext = userSellerContext;
         }
+
+        Task<List<User>> IUserRepository.GetListAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User?> GetByIdAsync(int id)
         {
             return await _userSellerContext.Users
@@ -41,18 +48,38 @@ namespace ECommerce.Infrastructure
             }
             
         }
+
+        Task<bool> IUserRepository.UpdateAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IUserRepository.DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Seller---
+
         public async Task<Seller?> GetSellerAsync(int id)
         {
             User? user = await _userSellerContext.Users
                 .Include(u => u.Seller).FirstOrDefaultAsync(u => u.UserId == id);
             return user?.Seller;
         }
-        public async Task<Seller?> AddSellerAsync(Seller seller)
+
+
+        Task<List<Seller>> IUserRepository.GetListSeller()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> AddSellerAsync(Seller seller)
         {
             User? user = await _userSellerContext.Users.FirstOrDefaultAsync(s => s.UserId == seller.UserId);
             if (user == null || user.Role != "User")
             {
-                return null;
+                return false;
             }
             seller.UserId = user.UserId;
             seller.User = user;
@@ -60,7 +87,17 @@ namespace ECommerce.Infrastructure
             _userSellerContext.Users.Update(user);
             await _userSellerContext.SaveChangesAsync();
 
-            return seller;
+            return true;
+        }
+
+        Task<bool> IUserRepository.UpdateSellerAsync(Seller seller)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IUserRepository.DeleteSellerAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

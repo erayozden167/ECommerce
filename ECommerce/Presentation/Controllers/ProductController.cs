@@ -19,7 +19,7 @@ namespace Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductListAsync()
         {
-            List<ProductDTO> products = await _productService.GetListAsync();
+            List<ProductDto> products = await _productService.GetListAsync();
             if (products.IsNullOrEmpty())
             {
                 return NoContent();

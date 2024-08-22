@@ -30,14 +30,14 @@ namespace Presentation.Controllers
             return Ok();
         }
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync(LoginDTO login)
+        public async Task<IActionResult> LoginAsync(LoginDto login)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            AuthResultDTO result = await _authService.LoginAsync(login);
-            if (!result.IsSuccess)
+            AuthResultDto? result = await _authService.LoginAsync(login);
+            if (result == null || !result.IsSuccess)
             {
                 return Unauthorized("Kullanıcı adı veya şifre hatalı");
             }

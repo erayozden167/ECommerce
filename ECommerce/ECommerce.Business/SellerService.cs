@@ -3,6 +3,7 @@ using ECommerce.Business.Interfaces;
 using ECommerce.Domain;
 using ECommerce.DTOs;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,12 @@ namespace ECommerce.Business
 {
     public class SellerService : ISellerService
     {
-        private readonly UserRepository _userRepository;
-        public SellerService(UserRepository userRepository)
+        private readonly IUserRepository _userRepository;
+        public SellerService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-        public async Task<SellerDTO?> GetAsync(int sellerId)
+        public async Task<SellerDto?> GetAsync(int sellerId)
         {
             Seller? seller = await _userRepository.GetSellerAsync(sellerId);
             if (seller == null)
@@ -26,7 +27,7 @@ namespace ECommerce.Business
                 return null;
             }
 
-            SellerDTO sellerDTO = new SellerDTO()
+            SellerDto sellerDTO = new SellerDto()
             {
                 SellerId = seller.SellerId,
                 StoreName = seller.StoreName,
@@ -37,7 +38,7 @@ namespace ECommerce.Business
             return sellerDTO;
         }
 
-        public async Task<SellerDTO?> AddAsync(AddSellerDTO seller)
+        public async Task<bool> AddAsync(AddSellerDto seller)
         {
             Seller entity = new Seller()
             {
@@ -46,28 +47,28 @@ namespace ECommerce.Business
                 CreatedDate = DateTime.UtcNow,
                 ApprovalStatus = "Beklemede"
             };
-            Seller? response = await _userRepository.AddSellerAsync(entity);
-            if (response == null)
+            bool response = await _userRepository.AddSellerAsync(entity);
+            if (response == false)
             {
-                return null;
+                return false;
             }
-            SellerDTO sellerDTO = new SellerDTO()
-            {
-                SellerId = response.SellerId,
-                UserId = response.UserId,
-                StoreName = response.StoreName,
-                ApprovalStatus = response.ApprovalStatus,
-                CreatedDate = response.CreatedDate
-            };
-            return sellerDTO;
+            //SellerDto sellerDTO = new SellerDto()
+            //{
+            //    SellerId = response.SellerId,
+            //    UserId = response.UserId,
+            //    StoreName = response.StoreName,
+            //    ApprovalStatus = response.ApprovalStatus,
+            //    CreatedDate = response.CreatedDate
+            //};
+            return true;
         }
 
-        public async Task<SellerDTO> UpdateAsync(AddSellerDTO updateSeller)
+        public async Task<bool> UpdateAsync(AddSellerDto updateSeller)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<SellerDTO> ApprovalAsync(ApprovalSellerDto approval)
+        public async Task<SellerDto> ApprovalAsync(ApprovalSellerDto approval)
         {
             throw new NotImplementedException();
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.DTOs
 {
-    public class LoginDTO
+    public class LoginDto
     {
         [Required]
         [EmailAddress]

@@ -9,7 +9,7 @@ namespace ECommerce.Business.Interfaces
 {
     public interface IProductService
     {
-        Task<List<ProductDTO>> GetListAsync();
-        Task<ProductInfoDto> GetAsync(int id);
+        Task<List<ProductDto>> GetListAsync();
+        Task<ProductInfoDto?> GetAsync(int id);
     }
 }

@@ -2,6 +2,7 @@ using ECommerce.Business;
 using ECommerce.Business.Interfaces;
 using ECommerce.Data;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -30,10 +31,13 @@ builder.Services.AddDbContext<PurchaseContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<ISellerService,SellerService>();
 builder.Services.AddScoped<PurchaseService>();
 
 //Repositories
-builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
+builder.Services.AddScoped<IPurchaseRepository,PurchaseRepository>();
 
 
 var app = builder.Build();

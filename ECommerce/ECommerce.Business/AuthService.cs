@@ -1,7 +1,8 @@
 ﻿using ECommerce.Business.Interfaces;
 using ECommerce.Domain;
 using ECommerce.DTOs;
-using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -11,17 +12,17 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace ECommerce.Business
 {
-    public class AuthService : IAuthService
+    public class AuthService:IAuthService
     {
-        private readonly UserRepository _userRepository;
-        private readonly string _secretKey; 
-        public AuthService(UserRepository userRepository, string secretKey)
+        private readonly IUserRepository _userRepository;
+        private readonly string _secretKey;
+        public AuthService(IUserRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
-            _secretKey = secretKey;
+            _secretKey = configuration["JwtSettings:SecretKey"]
+             ?? throw new ArgumentNullException("JwtSettings:SecretKey", "JWT Secret Key is missing in configuration.");
         }
         public async Task<bool> RegisterAsync(RegisterDto register)
         {
@@ -40,17 +41,17 @@ namespace ECommerce.Business
             }
             return true;
         }
-        public async Task<AuthResultDTO> LoginAsync(LoginDTO login)
+        public async Task<AuthResultDto?> LoginAsync(LoginDto login)
         {
             User? user = await _userRepository.GetByEmailAsync(login.Email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password,user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
             {
-                return new AuthResultDTO() { IsSuccess = false};
+                return new AuthResultDto() { IsSuccess = false };
             }
 
             string token = GenerateJwtToken(user);
 
-            return new AuthResultDTO() { IsSuccess = true,Token =token};
+            return new AuthResultDto() { IsSuccess = true, Token = token };
         }
 
         private string GenerateJwtToken(User user)
@@ -70,6 +71,5 @@ namespace ECommerce.Business
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
     }
 }

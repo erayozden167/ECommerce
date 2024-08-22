@@ -8,7 +8,7 @@ namespace ECommerce.DTOs
 {
     public class UserInfoDto
     {
-        public UserDTO User { get; set; }
-        public SellerDTO Seller { get; set; }
+        public UserDto User { get; set; }
+        public SellerDto Seller { get; set; }
     }
 }

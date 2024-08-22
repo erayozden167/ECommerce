@@ -2,6 +2,7 @@
 using ECommerce.Domain;
 using ECommerce.DTOs;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,22 +14,22 @@ namespace ECommerce.Business
 {
     public class ProductService : IProductService
     {
-        private readonly ProductRepository _productRepository;
-        public ProductService(ProductRepository productRepository)
+        private readonly IProductRepository _productRepository;
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
-        public async Task<List<ProductDTO>> GetListAsync()
+        public async Task<List<ProductDto>> GetListAsync()
         {
-            List<Product> products = await _productRepository.GetProductListAsync();
+            List<Product> products = await _productRepository.GetListAsync();
             if (products.IsNullOrEmpty())
             {
-                return new List<ProductDTO>();
+                return new List<ProductDto>();
             }
-            List<ProductDTO> listOfProduct = new List<ProductDTO>();
+            List<ProductDto> listOfProduct = new List<ProductDto>();
             foreach (var item in products)
             {
-                ProductDTO productDTO = new ProductDTO()
+                ProductDto productDTO = new ProductDto()
                 {
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
@@ -40,7 +41,7 @@ namespace ECommerce.Business
         }
         public async Task<ProductInfoDto?> GetAsync(int id)
         {
-            Product? product = await _productRepository.GetProductAsync(id);
+            Product? product = await _productRepository.GetAsync(id);
             if (product == null)
             {
                 return null;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.DTOs
 {
-    public class AuthResultDTO
+    public class AuthResultDto
     {
         public bool IsSuccess { get; set; }
         public string Token { get; set; }

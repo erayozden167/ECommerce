@@ -9,10 +9,10 @@ namespace ECommerce.Business.Interfaces
 {
     public interface ISellerService
     {
-        Task<SellerDTO?> GetAsync(int sellerId);
-        Task<SellerDTO?> AddAsync(AddSellerDTO seller);
-        Task<SellerDTO?> UpdateAsync(AddSellerDTO updateSeller);
-        Task<SellerDTO?> ApprovalAsync(ApprovalSellerDto approval);
+        Task<SellerDto?> GetAsync(int sellerId);
+        Task<bool> AddAsync(AddSellerDto seller);
+        Task<bool> UpdateAsync(AddSellerDto updateSeller);
+        Task<SellerDto?> ApprovalAsync(ApprovalSellerDto approval);
         Task<bool> DeleteAsync(int sellerId);
     }
 }

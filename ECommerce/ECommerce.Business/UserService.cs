@@ -2,6 +2,7 @@
 using ECommerce.Domain;
 using ECommerce.DTOs;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,19 @@ namespace ECommerce.Business
 {
     public class UserService : IUserService
     {
-        private readonly UserRepository _userRepository;
-        public UserService(UserRepository userRepository)
+        private readonly IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-        public async Task<UserDTO?> GetAsync(int id)
+        public async Task<UserDto?> GetAsync(int id)
         {
             User? user = await _userRepository.GetByIdAsync(id);
             if (user == null)
             {
                 return null;
             }
-            UserDTO userDTO = new UserDTO()
+            UserDto userDTO = new UserDto()
             {
                 UserId = user.UserId,
                 Name = user.Name,
@@ -34,47 +35,7 @@ namespace ECommerce.Business
             };
             return userDTO;
         }
-        public async Task<SellerDTO?> GetSellerAsync(int id)
-        {
-            Seller? seller = await _userRepository.GetSellerAsync(id);
-            if (seller == null)
-            {
-                return null;
-            }
-            
-            SellerDTO sellerDTO = new SellerDTO()
-            {
-                SellerId = seller.SellerId,
-                StoreName = seller.StoreName,
-                CreatedDate = seller.CreatedDate,
-                SalesCount = seller.Sales.Count
-            };
-           
-            return sellerDTO;
-        }
-        public async Task<SellerDTO?> AddSellerAsync(AddSellerDTO request)
-        {
-            Seller seller = new Seller()
-            {
-                UserId = request.UserId,
-                StoreName = request.StoreName,
-                CreatedDate = DateTime.UtcNow,
-                ApprovalStatus = "Beklemede"
-            };
-            Seller? response = await _userRepository.AddSellerAsync(seller);
-            if (response == null)
-            {
-                return null;
-            }
-            SellerDTO sellerDTO = new SellerDTO()
-            {
-                SellerId = response.SellerId,
-                UserId = response.UserId,
-                StoreName = response.StoreName,
-                ApprovalStatus = response.ApprovalStatus,
-                CreatedDate = response.CreatedDate
-            };
-            return sellerDTO;
-        }
+        
+       
     }
 }

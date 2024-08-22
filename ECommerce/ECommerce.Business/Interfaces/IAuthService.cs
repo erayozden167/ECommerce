@@ -10,6 +10,6 @@ namespace ECommerce.Business.Interfaces
     public interface IAuthService
     {
         Task<bool> RegisterAsync(RegisterDto register);
-        Task<AuthResultDTO> LoginAsync(LoginDTO login);
+        Task<AuthResultDto?> LoginAsync(LoginDto login);
     }
 }
