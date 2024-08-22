@@ -10,7 +10,6 @@ namespace ECommerce.Business.Interfaces
     public interface IUserService
     {
         Task<UserDTO?> GetAsync(int id);
-        Task<SellerDTO?> GetSellerAsync(int id);
-        Task<SellerDTO?> AddSellerAsync(AddSellerDTO seller);
+     
     }
 }
