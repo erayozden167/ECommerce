@@ -2,6 +2,7 @@
 using ECommerce.Domain;
 using ECommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Sm.Crm.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace ECommerce.Infrastructure
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserSellerContext _userSellerContext;
-        public UserRepository(UserSellerContext userSellerContext)
+        private readonly ApplicationDbContext _userSellerContext;
+        public UserRepository(ApplicationDbContext userSellerContext)
         {
             _userSellerContext = userSellerContext;
         }

@@ -2,70 +2,71 @@
 using ECommerce.Domain;
 using ECommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Sm.Crm.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ECommerce.Infrastructure
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ProductContext _productContext;
-        public ProductRepository(ProductContext productContext)
+        private readonly ApplicationDbContext _context;
+
+        public ProductRepository(ApplicationDbContext context)
         {
-            _productContext = productContext;
+            _context = context;
         }
 
         public async Task<List<Product>> GetListAsync()
         {
-            return await _productContext.Products.ToListAsync();
+            return await _context.Products.ToListAsync();
         }
 
-        public async Task<Product?> GetAsync(int ProductId)
+        public async Task<Product?> GetAsync(int productId)
         {
-            return await _productContext.Products.Include(p => p.Seller).FirstOrDefaultAsync(p => p.ProductId == ProductId);
+            return await _context.Products
+                                 .Include(p => p.Seller)
+                                 .FirstOrDefaultAsync(p => p.ProductId == productId);
         }
 
         public async Task<bool> AddAsync(Product product)
         {
             try
             {
-                await _productContext.Products.AddAsync(product);
-                await _productContext.SaveChangesAsync();
+                await _context.Products.AddAsync(product);
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
 
         public async Task<bool> UpdateAsync(Product product)
         {
-            Product? entity = await _productContext.Products.FindAsync(product.ProductId);
+            var entity = await _context.Products.FindAsync(product.ProductId);
             if (entity == null)
             {
                 return false;
             }
 
-            entity = product;
-            _productContext.Products.Update(entity);
-            await _productContext.SaveChangesAsync();
+            _context.Entry(entity).CurrentValues.SetValues(product);
+            await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> DeleteAsync(int productId)
         {
-            Product? entity = await _productContext.Products.FindAsync(productId);
+            var entity = await _context.Products.FindAsync(productId);
             if (entity == null)
             {
                 return false;
             }
-            _productContext.Products.Remove(entity);
-            await _productContext.SaveChangesAsync();
+
+            _context.Products.Remove(entity);
+            await _context.SaveChangesAsync();
             return true;
         }
     }

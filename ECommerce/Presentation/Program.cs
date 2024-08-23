@@ -4,6 +4,7 @@ using ECommerce.Data;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Sm.Crm.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
@@ -20,12 +21,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Contexts
-builder.Services.AddDbContext<UserSellerContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<ProductContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<PurchaseContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 //Services
 builder.Services.AddScoped<IAuthService, AuthService>();

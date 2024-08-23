@@ -2,6 +2,7 @@
 using ECommerce.Domain;
 using ECommerce.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Sm.Crm.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace ECommerce.Infrastructure
 {
     public class PurchaseRepository : IPurchaseRepository
     {
-        private readonly PurchaseContext _purchaseContext;
-        public PurchaseRepository(PurchaseContext purchaseContext)
+        private readonly ApplicationDbContext _purchaseContext;
+        public PurchaseRepository(ApplicationDbContext purchaseContext)
         {
             _purchaseContext = purchaseContext;
         }
