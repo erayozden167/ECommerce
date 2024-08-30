@@ -1,6 +1,7 @@
 ﻿using ECommerce.Business;
 using ECommerce.Business.Interfaces;
 using ECommerce.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,7 @@ namespace Presentation.Controllers
             _productService = productService;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetProductListAsync()
         {
             List<ProductDto> products = await _productService.GetListAsync();
@@ -27,6 +29,7 @@ namespace Presentation.Controllers
             return Ok(products);
         }
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProduct(int id)
         {
             if (id == 0)
